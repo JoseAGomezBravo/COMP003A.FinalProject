@@ -17,6 +17,8 @@ namespace COMP003A.FinalProject
 
             PrintSeperator("Information");
 
+            Console.WriteLine("\n");
+
             do
             {
 
@@ -46,11 +48,22 @@ namespace COMP003A.FinalProject
                 Console.Write("Enter Gender M/F or O: \n");
                 UserGender = Console.ReadLine().ToUpper();
 
-            } while (UserGender != "M" && UserGender != "F" && UserGender != "O");
+            } while (UserGender != "M" && UserGender != "F" && UserGender != "O"); //makes sure that the user's input is a character that was given as an option
 
             Console.WriteLine("\n");
 
-            Console.ForegroundColor= ConsoleColor.Blue;
+            switch (UserGender) // changes font color according the user input
+            {
+                case "M":
+                    Console.ForegroundColor= ConsoleColor.Blue;
+                    break;
+                case "F":
+                    Console.ForegroundColor= ConsoleColor.Red;
+                    break;
+                case"O":
+                    Console.ForegroundColor= ConsoleColor.White;
+                    break;
+            }
 
             PrintSeperator("Questionaire");
 
@@ -88,6 +101,7 @@ namespace COMP003A.FinalProject
             Console.Write("Who is your favorite actor? \n");
             Answers.Add(Console.ReadLine());
 
+            Console.WriteLine("\n");
 
             PrintSeperator("Summary");
 
@@ -99,17 +113,22 @@ namespace COMP003A.FinalProject
 
             Console.WriteLine($"User's Age: {Userage}");
 
-            switch (UserGender) 
+            switch (UserGender) // Displays the user's full gender description, by interperting the user's input (M, F, and O).
             {
                 case "M":
-                    Console.WriteLine("User Gender: Male");
+                    Console.WriteLine("User Gender's: Male");
                     break;
                 case "F":
-                    Console.WriteLine("User Gender: Female");
+                    Console.WriteLine("User Gender's: Female");
                     break;
                 case "O":
-                    Console.WriteLine("User Gender: Other Not listed");
+                    Console.WriteLine("User Gender's: Other Not listed");
                     break;
+            }
+
+            for (int i = 0; i < Answers.Count; i++) // Displays question number and corresponding answer.
+            {
+                Console.WriteLine("Question {0}: {1}", i + 1, Answers[i]);
             }
 
         }
@@ -117,12 +136,14 @@ namespace COMP003A.FinalProject
         /// <summary>
         /// Basic seperator with section title 
         /// </summary>
+        /// 
+        /// 
         /// <param name="title">Section name</param>
         static void PrintSeperator(string title)
         {
-            Console.WriteLine("".PadRight(50, '*'));
+            Console.WriteLine("".PadRight(50, '-'));
             Console.WriteLine(title);
-            Console.WriteLine("".PadRight(50, '*'));
+            Console.WriteLine("".PadRight(50, '-'));
         }
 
         /// <summary>
@@ -141,7 +162,11 @@ namespace COMP003A.FinalProject
             }
             return true;
         }
-
+        /// <summary>
+        /// Calculates the users age by subtracting current year by birth year
+        /// </summary>
+        /// <param name="Birthyear"></param>
+        /// <returns>User's age</returns>
         static int AgeCalulator(int Birthyear)
         {
             return DateTime.Now.Year - Birthyear;
