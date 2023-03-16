@@ -6,7 +6,9 @@
 
 using System;
 using System.Text.RegularExpressions;
+using System.Transactions;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace COMP003A.FinalProject
 {
@@ -14,14 +16,16 @@ namespace COMP003A.FinalProject
     {
         static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
 
-            string firstName, Lastname, UserGender;
-            int Birthyear;
+            string firstName, lastName, userGender;
+            int birthYear;
 
             PrintSeperator("Information");
 
             Console.WriteLine("\n");
+            //Regex.IsMatch(name, @"^[a-zA-Z]+$"
+            //while (string.IsNullOrEmpty(firstName) || !ValidName(firstName));
+            bool validiNput = false;
 
             do
             {
@@ -29,31 +33,72 @@ namespace COMP003A.FinalProject
                 Console.Write("Enter First Name: \n");
                 firstName = Console.ReadLine().Trim();
 
-            } while (string.IsNullOrEmpty(firstName) || !ValidName(firstName));
+                if (Regex.IsMatch(firstName, @"^[a-zA-Z]+$"))
+                {
+                    validiNput = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input!");
+                }
 
+            } while (!validiNput);
+
+            bool vaLidinput = false;
             do
             {
 
                 Console.Write("Enter Last Name: \n");
-                Lastname = Console.ReadLine().Trim();
+                lastName = Console.ReadLine().Trim();
 
-            } while (string.IsNullOrEmpty(Lastname) || !ValidName(Lastname));
+                if (Regex.IsMatch(lastName, @"^[a-zA-Z]+$"))
+                {
+                    vaLidinput = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input!");
+                }
+
+            } while (!vaLidinput);
+
+            bool validInput = false;
 
             do
             {
+                Console.WriteLine("When were you born?");
+                birthYear = Convert.ToInt32(Console.ReadLine());
 
-                Console.Write("Enter Birth Year: \n");
-                int.TryParse(Console.ReadLine(), out Birthyear);
+                if (birthYear < 1900 || birthYear > DateTime.Now.Year)
+                {
+                    Console.WriteLine("Invalid Input");
+                }
+                else
+                {
+                    validInput = true;
+                }
 
-            } while (Birthyear < 1900 || Birthyear > DateTime.Now.Year);
+            } while (!validInput);
+
+            bool validinPut = false;
 
             do
             {
 
                 Console.Write("Enter Gender M/F or O: \n");
-                UserGender = Console.ReadLine().ToUpper();
+                userGender = Console.ReadLine().ToUpper();
 
-            } while (UserGender != "M" && UserGender != "F" && UserGender != "O"); //makes sure that the user's input is a character that was given as an option
+                if (userGender != "M" && userGender != "F" && userGender != "0")
+                {
+                    Console.WriteLine("Invalid Input");
+
+                }
+                else
+                {
+                    validinPut= true;
+                }
+
+            } while (!validinPut); //makes sure that the user's input is a character that was given as an option
 
             Console.WriteLine("\n");
 
@@ -62,7 +107,7 @@ namespace COMP003A.FinalProject
             
             Console.WriteLine("\n");
 
-            List<string> Answers = new List<string>();
+            List<string> anSwers = new List<string>();
 
             string[] array1 = new string[10];
 
@@ -77,12 +122,12 @@ namespace COMP003A.FinalProject
             array1[8] = "What is your favorite sport?";
             array1[9] = "Who is your favorite actor?";
 
+
             for (int i = 0; i < array1.Length; i++)
             {
-                Console.Write($"{array1[i]} \n");
-                Answers.Add(Console.ReadLine());
                 
-
+                Console.Write($"{array1[i]} \n");
+                anSwers.Add(Console.ReadLine());
             }
 
             Console.WriteLine("\n");
@@ -91,13 +136,13 @@ namespace COMP003A.FinalProject
 
             Console.WriteLine("\n");
 
-            Console.WriteLine($"{firstName} {Lastname}");
+            Console.WriteLine($"{firstName} {lastName}");
 
-            int Userage = AgeCalulator(Birthyear);
+            int Userage = AgeCalulator(birthYear);
 
             Console.WriteLine($"User's Age: {Userage}");
 
-            switch (UserGender) // Displays the user's full gender description, by interperting the user's input (M, F, and O).
+            switch (userGender) // Displays the user's full gender description, by interperting the user's input (M, F, and O).
             {
                 case "M":
                     Console.WriteLine("User's Gender: Male");
@@ -110,10 +155,10 @@ namespace COMP003A.FinalProject
                     break;
             }
 
-            for (int i = 0; i < Answers.Count; i++) // Displays question number and corresponding answer.
+            for (int i = 0; i < anSwers.Count; i++) // Displays question number and corresponding answer.
             {
                 Console.WriteLine(array1[i]);
-                Console.WriteLine(Answers[i]);
+                Console.WriteLine(anSwers[i]);
             }
 
         }
@@ -131,45 +176,16 @@ namespace COMP003A.FinalProject
             Console.WriteLine("".PadRight(50, '-'));
         }
 
-        /// <summary>
-        /// Makes sure that the User's first and last name are both valid inputs (not null, special characters, numbers, etc
-        /// </summary>
-        /// <param name="name">string first/last name</param>
-        /// <returns>true = valid name, false = invalid input</returns>
-        static bool ValidName(string name)
-        {
-            foreach (char c in name)
-            {
-                if (!char.IsLetter(c))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+
         /// <summary>
         /// Calculates the users age by subtracting current year by birth year
         /// </summary>
         /// <param name="Birthyear"></param>
         /// <returns>User's age</returns>
-        static int AgeCalulator(int Birthyear)
+        static int AgeCalulator(int birthYear)
         {
-            return DateTime.Now.Year - Birthyear;
+            return DateTime.Now.Year - birthYear;
         }
 
-        static bool ValidAsnwer(string Answer)
-        {
-            while (string.IsNullOrEmpty(Answer))
-            {
-                Console.WriteLine("Invalid Input");
-            }
-            return true;
-        }
-        
-        static bool CFristname (string name)
-        {
-            Console.WriteLine(Regex.IsMatch(name, @"^[a-zA-Z]+$"));
-            return true;
-        }
     }
 }
