@@ -4,6 +4,10 @@
  * Purpose: An intake form for a New User Profile
  */
 
+using System;
+using System.Text.RegularExpressions;
+using System.Xml;
+
 namespace COMP003A.FinalProject
 {
     internal class Program
@@ -12,7 +16,7 @@ namespace COMP003A.FinalProject
         {
             Console.ForegroundColor = ConsoleColor.Green;
 
-            string Firstname, Lastname, UserGender;
+            string firstName, Lastname, UserGender;
             int Birthyear;
 
             PrintSeperator("Information");
@@ -23,16 +27,17 @@ namespace COMP003A.FinalProject
             {
 
                 Console.Write("Enter First Name: \n");
-                Firstname = Console.ReadLine().Trim();
+                firstName = Console.ReadLine().Trim();
 
-            } while (string.IsNullOrEmpty(Firstname) || !ValidName(Firstname));
+            } while (string.IsNullOrEmpty(firstName) || !ValidName(firstName));
 
             do
             {
 
                 Console.Write("Enter Last Name: \n");
                 Lastname = Console.ReadLine().Trim();
-            } while (string.IsNullOrEmpty(Firstname) || !ValidName(Firstname));
+
+            } while (string.IsNullOrEmpty(Lastname) || !ValidName(Lastname));
 
             do
             {
@@ -40,7 +45,7 @@ namespace COMP003A.FinalProject
                 Console.Write("Enter Birth Year: \n");
                 int.TryParse(Console.ReadLine(), out Birthyear);
 
-            } while (Birthyear < 1990 || Birthyear > DateTime.Now.Year);
+            } while (Birthyear < 1900 || Birthyear > DateTime.Now.Year);
 
             do
             {
@@ -52,54 +57,33 @@ namespace COMP003A.FinalProject
 
             Console.WriteLine("\n");
 
-            switch (UserGender) // changes font color according the user input
-            {
-                case "M":
-                    Console.ForegroundColor= ConsoleColor.Blue;
-                    break;
-                case "F":
-                    Console.ForegroundColor= ConsoleColor.Red;
-                    break;
-                case"O":
-                    Console.ForegroundColor= ConsoleColor.White;
-                    break;
-            }
 
             PrintSeperator("Questionaire");
-
+            
             Console.WriteLine("\n");
 
             List<string> Answers = new List<string>();
 
-            Console.Write("What is your favorite hobby? \n");
-            Answers.Add(Console.ReadLine());
+            string[] array1 = new string[10];
 
-            Console.Write("What is favorite your color? \n");
-            Answers.Add(Console.ReadLine());
+            array1[0] = "What is your favorite hobby?";
+            array1[1] = "What is favorite your color?";
+            array1[2] = "What is your favorite show?";
+            array1[3] = "What is your favorite movie?";
+            array1[4] = "What is your favorite place to go?";
+            array1[5] = "What is your favorite social media app?";
+            array1[6] = "What book would you recommend?";
+            array1[7] = "What is your favorite clothing brand?";
+            array1[8] = "What is your favorite sport?";
+            array1[9] = "Who is your favorite actor?";
 
-            Console.Write("What is your favorite show? \n");
-            Answers.Add(Console.ReadLine());
+            for (int i = 0; i < array1.Length; i++)
+            {
+                Console.Write($"{array1[i]} \n");
+                Answers.Add(Console.ReadLine());
+                
 
-            Console.Write("What is your favorite movie? \n");
-            Answers.Add(Console.ReadLine());
-
-            Console.Write("What is your favorite place to go? \n");
-            Answers.Add(Console.ReadLine());
-
-            Console.Write("What is your favorite social media app? \n");
-            Answers.Add(Console.ReadLine());
-
-            Console.Write("What book would you recommend? \n");
-            Answers.Add(Console.ReadLine());
-
-            Console.Write("What is your favorite clothing brand? \n");
-            Answers.Add(Console.ReadLine());
-
-            Console.Write("What is your favorite sport? \n");
-            Answers.Add(Console.ReadLine());
-
-            Console.Write("Who is your favorite actor? \n");
-            Answers.Add(Console.ReadLine());
+            }
 
             Console.WriteLine("\n");
 
@@ -107,7 +91,7 @@ namespace COMP003A.FinalProject
 
             Console.WriteLine("\n");
 
-            Console.WriteLine($"{Firstname} {Lastname}");
+            Console.WriteLine($"{firstName} {Lastname}");
 
             int Userage = AgeCalulator(Birthyear);
 
@@ -116,19 +100,20 @@ namespace COMP003A.FinalProject
             switch (UserGender) // Displays the user's full gender description, by interperting the user's input (M, F, and O).
             {
                 case "M":
-                    Console.WriteLine("User Gender's: Male");
+                    Console.WriteLine("User's Gender: Male");
                     break;
                 case "F":
-                    Console.WriteLine("User Gender's: Female");
+                    Console.WriteLine("User's Gender: Female");
                     break;
                 case "O":
-                    Console.WriteLine("User Gender's: Other Not listed");
+                    Console.WriteLine("User's Gender: Other Not listed");
                     break;
             }
 
             for (int i = 0; i < Answers.Count; i++) // Displays question number and corresponding answer.
             {
-                Console.WriteLine("Question {0}: {1}", i + 1, Answers[i]);
+                Console.WriteLine(array1[i]);
+                Console.WriteLine(Answers[i]);
             }
 
         }
@@ -172,5 +157,19 @@ namespace COMP003A.FinalProject
             return DateTime.Now.Year - Birthyear;
         }
 
+        static bool ValidAsnwer(string Answer)
+        {
+            while (string.IsNullOrEmpty(Answer))
+            {
+                Console.WriteLine("Invalid Input");
+            }
+            return true;
+        }
+        
+        static bool CFristname (string name)
+        {
+            Console.WriteLine(Regex.IsMatch(name, @"^[a-zA-Z]+$"));
+            return true;
+        }
     }
 }
